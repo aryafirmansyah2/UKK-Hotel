@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true
     },
-    nomor_kamar: DataTypes.INTEGER(5),
+    nomor_kamar: DataTypes.TEXT,
     id_tipe_kamar: DataTypes.INTEGER(11)
   }, {
     sequelize,

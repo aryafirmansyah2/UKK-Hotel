@@ -1,5 +1,13 @@
 //import express
 const express = require("express")
+//import auth
+const auth = require("../auth")
+const jwt = require("jsonwebtoken")
+const SECRET_KEY = "BelajarNodeJSItuMenyengankan"
+
+require("dotenv").config();
+
+
 
 const app = express()
 app.use(express.json())
@@ -7,6 +15,8 @@ app.use(express.json())
 
 // import md5
 const md5 = require("md5")
+const bcrypt = require("bcrypt");
+
 
 //import multer
 const multer = require("multer")
@@ -43,14 +53,37 @@ const storage = multer.diskStorage({
     }
 })
 let upload = multer({
-    storage: storage, 
+    storage: storage,
     limits: { fileSize: 10000000 },
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
     },
 })
 
-app.get("/", (req, res) => {
+app.post('/login', async (req, res) => {
+    let data = {
+        email: req.body.email
+    }
+    const user = await User.findOne({ where: data });
+    if (user) {
+        const password_valid = await bcrypt.compare(req.body.password, user.password);
+        if (password_valid) {
+            token = jwt.sign({ "id": user.id_user, "email": user.email  }, process.env.JWT_KEY
+            );
+            req.session.userId = user.id_user;
+            res.status(200).json({ token: token, role: user.role, "logged": true });
+        } else {
+            res.status(400).json({ error: "Password Incorrect" });
+        }
+
+    } else {
+        res.status(404).json({ error: "User does not exist" });
+    }
+
+});
+
+
+app.get("/", auth, (req, res) => {
     User.findAll()
         .then(result => {
             res.json({
@@ -65,7 +98,7 @@ app.get("/", (req, res) => {
 })
 
 //endpoint untuk melihat user berdasarkan id
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = { id_user: req.params.id }
 
     User.findOne({ where: param })
@@ -82,7 +115,33 @@ app.get("/:id", (req, res) => {
 })
 
 //endpoint untuk menyimpan data admin, METHOD: POST, function: create
-app.post("/", upload.single("foto"), (req, res) => {
+app.get("/user/pemesanan/:id",async (req, res) => { 
+
+        let data = {
+            email: req.body.email,
+            password: await bcrypt.hash(req.body.password, salt),
+            role: req.body.role
+        }
+        User.create(data)
+            .then(result => {
+                res.json({
+                    message: "data has been inserted",
+                    data: result,
+                })
+            })
+            .catch(error => {
+                res.json({
+                    message: error.message
+                })
+            })
+    
+})
+
+
+//endpoint untuk menyimpan data admin, METHOD: POST, function: create
+app.post("/", upload.single("foto"), async (req, res) => {
+    const salt = await bcrypt.genSalt(10);
+
 
     if (!req.file) {
         res.json({
@@ -93,7 +152,7 @@ app.post("/", upload.single("foto"), (req, res) => {
             nama_user: req.body.nama_user,
             foto: req.file.path,
             email: req.body.email,
-            password: md5(req.body.password),
+            password: await bcrypt.hash(req.body.password, salt),
             role: req.body.role
         }
         User.create(data)
@@ -111,7 +170,7 @@ app.post("/", upload.single("foto"), (req, res) => {
     }
 })
 
-app.put("/:id", upload.single("foto"), (req, res) => {
+app.put("/:id", auth, upload.single("foto"), async (req, res) => {
     let param = { id_user: req.params.id }
     let data = {
         nama_user: req.body.nama_user,
@@ -122,7 +181,7 @@ app.put("/:id", upload.single("foto"), (req, res) => {
     }
     if (req.file) {
         // get data by id
-        const row = User.findOne({ where: param })
+        const row = await User.findOne({ where: param })
             .then(result => {
                 let oldFileName = result.foto
 
@@ -142,7 +201,7 @@ app.put("/:id", upload.single("foto"), (req, res) => {
         data.password = md5(req.body.password)
     }
 
-    User.update(data, { where: param })
+    await User.update(data, { where: param })
         .then(result => {
             res.json({
                 message: "data has been updated",
@@ -155,7 +214,7 @@ app.put("/:id", upload.single("foto"), (req, res) => {
         })
 })
 
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_user: req.params.id }
         let result = await User.findOne({ where: param })

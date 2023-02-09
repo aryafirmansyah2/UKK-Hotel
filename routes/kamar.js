@@ -4,6 +4,7 @@ const express = require("express")
 const app = express()
 app.use(express.json())
 
+const auth = require("../auth")
 
 // import md5
 const md5 = require("md5")
@@ -34,7 +35,7 @@ app.get("/", (req, res) => {
 
 app.get("/:id", (req, res) => {
     let param = ({ id_kamar: req.params.id })
-    Kamar.findOne({ where: param, include: ["tipe_kamar"] })
+    Kamar.findAll({ where: param, include: ["tipe_kamar"] })
         .then(result => {
             res.json({
                 data: result

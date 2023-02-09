@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nomor_kamar: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       id_tipe_kamar: {
         type: Sequelize.INTEGER,
