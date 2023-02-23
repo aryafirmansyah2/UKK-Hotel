@@ -12,9 +12,6 @@ require("dotenv").config();
 const app = express()
 app.use(express.json())
 
-
-// import md5
-const md5 = require("md5")
 const bcrypt = require("bcrypt");
 
 
@@ -60,30 +57,7 @@ let upload = multer({
     },
 })
 
-app.post('/login', async (req, res) => {
-    let data = {
-        email: req.body.email
-    }
-    const user = await User.findOne({ where: data });
-    if (user) {
-        const password_valid = await bcrypt.compare(req.body.password, user.password);
-        if (password_valid) {
-            token = jwt.sign({ "id": user.id_user, "email": user.email  }, process.env.JWT_KEY
-            );
-            req.session.userId = user.id_user;
-            res.status(200).json({ token: token, role: user.role, "logged": true });
-        } else {
-            res.status(400).json({ error: "Password Incorrect" });
-        }
-
-    } else {
-        res.status(404).json({ error: "User does not exist" });
-    }
-
-});
-
-
-app.get("/", auth, (req, res) => {
+app.get("/",  (req, res) => {
     User.findAll()
         .then(result => {
             res.json({
@@ -98,7 +72,7 @@ app.get("/", auth, (req, res) => {
 })
 
 //endpoint untuk melihat user berdasarkan id
-app.get("/:id", auth, (req, res) => {
+app.get("/:id",  (req, res) => {
     let param = { id_user: req.params.id }
 
     User.findOne({ where: param })
@@ -114,28 +88,7 @@ app.get("/:id", auth, (req, res) => {
         })
 })
 
-//endpoint untuk menyimpan data admin, METHOD: POST, function: create
-app.get("/user/pemesanan/:id",async (req, res) => { 
 
-        let data = {
-            email: req.body.email,
-            password: await bcrypt.hash(req.body.password, salt),
-            role: req.body.role
-        }
-        User.create(data)
-            .then(result => {
-                res.json({
-                    message: "data has been inserted",
-                    data: result,
-                })
-            })
-            .catch(error => {
-                res.json({
-                    message: error.message
-                })
-            })
-    
-})
 
 
 //endpoint untuk menyimpan data admin, METHOD: POST, function: create
@@ -150,7 +103,7 @@ app.post("/", upload.single("foto"), async (req, res) => {
     } else {
         let data = {
             nama_user: req.body.nama_user,
-            foto: req.file.path,
+            foto: req.file.filename,
             email: req.body.email,
             password: await bcrypt.hash(req.body.password, salt),
             role: req.body.role
@@ -170,13 +123,14 @@ app.post("/", upload.single("foto"), async (req, res) => {
     }
 })
 
-app.put("/:id", auth, upload.single("foto"), async (req, res) => {
+app.put("/:id", upload.single("foto"), async (req, res) => {
+    const salt = await bcrypt.genSalt(10);
     let param = { id_user: req.params.id }
     let data = {
         nama_user: req.body.nama_user,
-        foto: req.body.path,
+        foto: req.body.filename,
         email: req.body.email,
-        password: md5(req.body.password),
+        password: await bcrypt.hash(req.body.password,salt),
         role: req.body.role
     }
     if (req.file) {
@@ -194,11 +148,11 @@ app.put("/:id", auth, upload.single("foto"), async (req, res) => {
             })
 
         // set new filename
-        data.foto = req.file.path
+        data.foto = req.file.filename
     }
 
     if (req.body.password) {
-        data.password = md5(req.body.password)
+        data.password = await bcrypt.hash(req.body.password,salt)
     }
 
     await User.update(data, { where: param })

@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'id_user', as: 'user'});
+      
+      this.belongsTo(models.customer, { foreignKey: 'id_customer', as: 'customer'});
 
       this.belongsTo(models.tipe_kamar, { foreignKey: 'id_tipe_kamar', as: 'tipe_kamar'});
 
@@ -25,19 +27,18 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     nomor_pemesanan: DataTypes.INTEGER(10),
-    nama_pemesanan: DataTypes.STRING(100),
-    email_pemesanan: DataTypes.STRING(100),
-    tgl_pemesanan: DataTypes.DATE,
+    id_customer: DataTypes.INTEGER(11),
+    tgl_pemesanan: DataTypes.DATEONLY,
     tgl_check_in: DataTypes.DATEONLY,
     tgl_check_out: DataTypes.DATEONLY,
-    nama_tamu: DataTypes.STRING(100),
     jumlah_kamar: DataTypes.INTEGER(11),
     id_tipe_kamar: DataTypes.INTEGER(11),
-    status_pemesanan: DataTypes.ENUM('baru','check_in','check_out'),
+    status_pemesanan: DataTypes.ENUM('Baru','Check-In','Check-Out'),
     id_user: DataTypes.INTEGER(11)
   }, {
     sequelize,
     modelName: 'pemesanan',
+    tableName: 'pemesanan'
   });
   return pemesanan;
 };

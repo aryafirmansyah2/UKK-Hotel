@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('pemesanans', {
+    await queryInterface.createTable('pemesanan', {
       id_pemesanan: {
         allowNull: false,
         autoIncrement: true,
@@ -12,23 +12,21 @@ module.exports = {
       nomor_pemesanan: {
         type: Sequelize.INTEGER
       },
-      nama_pemesanan: {
-        type: Sequelize.STRING
-      },
-      email_pemesanan: {
-        type: Sequelize.STRING
+      id_customer: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'customer',
+          key: 'id_customer'
+        }
       },
       tgl_pemesanan: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       tgl_check_in: {
         type: Sequelize.DATEONLY
       },
       tgl_check_out: {
         type: Sequelize.DATEONLY
-      },
-      nama_tamu: {
-        type: Sequelize.STRING
       },
       jumlah_kamar: {
         type: Sequelize.INTEGER
@@ -61,6 +59,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('pemesanans');
+    await queryInterface.dropTable('pemesanan');
   }
 };

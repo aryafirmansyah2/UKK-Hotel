@@ -21,12 +21,16 @@ app.use(session({
 //endpoint nanti ditambahkan di sini
 app.use('/image/user', express.static(path.join(__dirname,'./image/user')))
 app.use('/image/tipe_kamar', express.static(path.join(__dirname,'./image/tipe_kamar')))
+app.use('/image/customer', express.static(path.join(__dirname,'./image/customer')))
 
 const Auth = require('./routes/auth');
 app.use("/auth", Auth)
 
 const User = require('./routes/user');
 app.use("/user", User)
+
+const Customer = require('./routes/customer');
+app.use("/customer", Customer)
 
 const Tipe_kamar = require('./routes/tipe_kamar');
 app.use("/tipe_kamar", Tipe_kamar)
@@ -39,6 +43,9 @@ app.use('/pemesanan', Pemesanan)
 
 const Detail_pemesanan = require('./routes/detail_pemesanan')
 app.use('/detail_pemesanan', Detail_pemesanan)
+
+const Filter_room = require('./routes/filter_kamar')
+app.use('/filter-room', Filter_room)
 
 //run server
 app.listen(8080, () => {

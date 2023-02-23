@@ -24,10 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     foto: DataTypes.TEXT,
     email: DataTypes.STRING(100),
     password: DataTypes.TEXT,
-    role: DataTypes.ENUM('admin', 'resepsionis','user')
+    role: DataTypes.ENUM('manager', 'resepsionis')
   }, {
     sequelize,
     modelName: 'user',
+    tableName: 'user'
   });
   return user;
 };

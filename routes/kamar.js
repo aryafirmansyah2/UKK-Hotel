@@ -6,21 +6,22 @@ app.use(express.json())
 
 const auth = require("../auth")
 
-// import md5
-const md5 = require("md5")
+const path = require(`path`);
+const fs = require(`fs`);
 
-//import multer
-const multer = require("multer")
-const path = require("path")
-const fs = require("fs")
+// import sequelize operator
+const sequelize = require(`sequelize`);
+const operator = sequelize.Op;
+
 
 //import model
 const models = require("../models/index")
 const Kamar = models.kamar
 const Tp_kamar = models.tipe_kamar
+const Detail_pemesanan = models.detail_pemesanan
 
 app.get("/", (req, res) => {
-    Kamar.findAll({include: ["tipe_kamar"] })
+    Kamar.findAll({ include: ["tipe_kamar"] })
         .then(result => {
             res.json({
                 data: result
@@ -48,7 +49,11 @@ app.get("/:id", (req, res) => {
         })
 })
 
+
 app.post("/", (req, res) => {
+
+     
+    
 
     let data = {
         nomor_kamar: req.body.nomor_kamar,
@@ -69,14 +74,14 @@ app.post("/", (req, res) => {
         })
 })
 
-app.put("/:id",  (req, res) => {
+app.put("/:id", (req, res) => {
     let param = { id_kamar: req.params.id }
     let data = {
         nomor_kamar: req.body.nomor_kamar,
         id_tipe_kamar: req.body.id_tipe_kamar,
     }
 
-    Kamar.update(data, { where: param, include:['tipe_kamar'] })
+    Kamar.update(data, { where: param, include: ['tipe_kamar'] })
         .then(result => {
             res.json({
                 message: "data has been updated",
@@ -93,10 +98,10 @@ app.put("/:id",  (req, res) => {
 app.delete("/:id", async (req, res) => {
     try {
         let param = { id_kamar: req.params.id }
-        let result = await Kamar.findOne({ where: param , include:['tipe_kamar']})
+        let result = await Kamar.findOne({ where: param, include: ['tipe_kamar'] })
 
         // delete data
-        Kamar.destroy({ where: param, include:['tipe_kamar'] })
+        Kamar.destroy({ where: param, include: ['tipe_kamar'] })
             .then(result => {
 
                 res.json({

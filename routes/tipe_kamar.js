@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
 })
 
 let upload = multer({
-    storage: storage, 
+    storage: storage,
     limits: { fileSize: 10000000 },
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
@@ -87,7 +87,7 @@ app.post("/", upload.single("foto"), (req, res) => {
             nama_tipe_kamar: req.body.nama_tipe_kamar,
             harga: req.body.harga,
             deskripsi: req.body.deskripsi,
-            foto: req.file.path
+            foto: req.file.filename
         }
 
         Tp_kamar.create(data)
@@ -111,11 +111,11 @@ app.put("/:id", upload.single("foto"), (req, res) => {
         nama_tipe_kamar: req.body.nama_tipe_kamar,
         harga: req.body.harga,
         deskripsi: req.body.deskripsi,
-        foto: req.body.path
+        // foto: req.body.filename
     }
     if (req.file) {
         // get data by id
-        const row = Tp_kamar.findOne({ where: param })
+        Tp_kamar.findOne({ where: param })
             .then(result => {
                 let oldFileName = result.foto
 
@@ -128,8 +128,9 @@ app.put("/:id", upload.single("foto"), (req, res) => {
             })
 
         // set new filename
-        data.foto = req.file.path
+        data.foto = req.file.filename
     }
+    console.log(data)
 
     Tp_kamar.update(data, { where: param })
         .then(result => {
@@ -148,17 +149,17 @@ app.delete("/:id", async (req, res) => {
     try {
         let param = { id_tipe_kamar: req.params.id }
         let result = await Tp_kamar.findOne({ where: param })
-        .then(result => {
+            .then(result => {
 
-            let oldFileName = result.foto
-            
-            // delete old file
-            let dir = path.join(__dirname, "./image/tipe_kamar", oldFileName)
-            fs.unlink(dir, err => console.log(err))
-        })
-        .catch(err => {
-            console.log(err)
-        })
+                let oldFileName = result.foto
+
+                // delete old file
+                let dir = path.join(__dirname, "./image/tipe_kamar", oldFileName)
+                fs.unlink(dir, err => console.log(err))
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
         // delete data
         Tp_kamar.destroy({ where: param })

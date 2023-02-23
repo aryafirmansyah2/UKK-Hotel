@@ -17,6 +17,7 @@ const bcrypt = require("bcrypt");
 //import model
 const models = require("../models/index")
 const User = models.user
+const Customer = models.customer
 
 app.post('/login', async (req, res) => {
     let data = {
@@ -29,7 +30,7 @@ app.post('/login', async (req, res) => {
             token = jwt.sign({ "id": user.id_user, "email": user.email }, process.env.JWT_KEY
             );
             req.session.userId = user.id_user;
-            res.status(200).json({ token: token, role: user.role, "logged": true });
+            res.status(200).json({ token: token, role: user.role, id_user:user.id_user, "logged": true });
         } else {
             res.status(400).json({ error: "Password Incorrect" });
         }
@@ -40,25 +41,26 @@ app.post('/login', async (req, res) => {
 
 });
 
-app.post('/me', async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
+app.post('/login/customer', async (req, res) => {
+    let data = {
+        username: req.body.username
     }
-    const user = await User.findOne({
-        attributes: ['id_user', 'email', 'role'],
-        where: {
-            id_user: req.session.userId
+    const customer = await Customer.findOne({ where: data });
+    if (customer) {
+        const password_valid = await bcrypt.compare(req.body.password, customer.password);
+        if (password_valid) {
+            token = jwt.sign({ "id": customer.id_customer, "username": customer.username }, process.env.JWT_KEY
+            );
+            res.status(200).json({ token: token, role: "user", id_customer:customer.id_customer, "logged": true });
+        } else {
+            res.status(400).json({ error: "Password Incorrect" });
         }
-    });
-    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-    res.status(200).json(user);
+
+    } else {
+        res.status(404).json({ error: "User does not exist" });
+    }
+
 });
 
-app.post('/logout', async (req, res) => {
-    req.session.destroy((err) => {
-        if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
-        res.status(200).json({ msg: "Anda telah logout" });
-    });
-});
 
 module.exports = app
