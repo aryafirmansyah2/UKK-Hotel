@@ -11,12 +11,42 @@ const operator = sequelize.Op;
 //import model
 const models = require("../models/index")
 const Pemesanan = models.pemesanan
+const User = models.user
 const Tp_kamar = models.tipe_kamar
 const Kamar = models.kamar
 const Detail_pemesanan = models.detail_pemesanan
 
+app.get("/resepsionis", async (req, res) => {
+    const search = req.query.search_query || "";
+    const result = await Pemesanan.findAll({
+        include: ["tipe_kamar", "customer"],
+        where: {
+            [operator.or]: [{
+                status_pemesanan: {
+                    [operator.like]: '%' + search + '%'
+                }
+            }]
+        },
+        order: [
+            ['id_pemesanan', 'DESC']
+        ]
+    });
+    res.json({
+        result: result,
+    });
+})
+
 app.get("/", (req, res) => {
-    Pemesanan.findAll({ include: ["tipe_kamar", "user"] })
+    Pemesanan.findAll(
+        {
+            include: ["tipe_kamar", "user"],
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
+        }
+    )
         .then(result => {
             res.json({
                 data: result
@@ -31,7 +61,13 @@ app.get("/", (req, res) => {
 
 app.get("/:id", (req, res) => {
     let param = ({ id_pemesanan: req.params.id })
-    Pemesanan.findOne({ where: param, include: ["tipe_kamar", "user", 'customer'] })
+    Pemesanan.findOne(
+        {
+            where: param,
+            include: ["tipe_kamar", "user", 'customer'],
+
+        }
+    )
         .then(result => {
             res.json({
                 data: result
@@ -45,7 +81,17 @@ app.get("/:id", (req, res) => {
 })
 app.get("/customer/:id", (req, res) => {
     let param = ({ id_customer: req.params.id })
-    Pemesanan.findAll({ where: param, include: ["tipe_kamar", "user", 'customer'] })
+    Pemesanan.findAll(
+        {
+            where: param,
+            include: ["tipe_kamar", "user", 'customer'],
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
+        }
+    )
         .then(result => {
             res.json({
                 data: result
@@ -74,7 +120,7 @@ app.post('/', async (req, res) => {
         id_tipe_kamar: req.body.id_tipe_kamar,
         status_pemesanan: req.body.status_pemesanan,
         id_user: req.body.id_user
-    
+
     };
 
     // rooms data
