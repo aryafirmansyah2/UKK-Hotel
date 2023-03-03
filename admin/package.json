@@ -1,0 +1,39 @@
+{
+  "name": "hotel-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.2",
+    "axios": "^1.2.3",
+    "flowbite": "^1.6.2",
+    "flowbite-datepicker": "^1.2.2",
+    "moment": "^2.29.4",
+    "next": "13.1.2",
+    "next-redux-wrapper": "^8.1.0",
+    "next-themes": "^0.2.1",
+    "react": "18.2.0",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^4.7.1",
+    "react-multi-carousel": "^2.8.2",
+    "react-redux": "^8.0.5",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.2",
+    "sweetalert2": "^11.7.2",
+    "swiper": "^8.4.6"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "eslint": "8.32.0",
+    "eslint-config-next": "13.1.2",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4"
+  }
+}
