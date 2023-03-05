@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
+import { headerConfig } from '../../utils/headerConfig';
 
 const DetailTipeKamar = () => {
 
@@ -18,7 +19,7 @@ const DetailTipeKamar = () => {
 
   const getData = async () => {
     await axios
-      .get(`http://localhost:8080/tipe_kamar/${id}`)
+      .get(`http://localhost:8080/tipe_kamar/${id}`, headerConfig())
       .then((res) => {
         setNamaTipeKamar(res.data.data?.nama_tipe_kamar)
         setHarga(res.data.data?.harga)

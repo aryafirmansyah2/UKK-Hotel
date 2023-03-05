@@ -3,6 +3,7 @@ import { useReactToPrint } from 'react-to-print';
 import { BiPrinter } from 'react-icons/bi'
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { headerConfig } from '../../utils/headerConfig';
 
 const PrintInvoice = () => {
   const componentRef = useRef();
@@ -26,7 +27,7 @@ const PrintInvoice = () => {
   }, [id])
 
   const getKamarBoked = async (e) => {
-    await axios.get(`http://localhost:8080/detail_pemesanan/${id}`)
+    await axios.get(`http://localhost:8080/detail_pemesanan/${id}`, headerConfig())
       .then((res) => {
         setData(res.data.data)
         console.log(res.data.data)

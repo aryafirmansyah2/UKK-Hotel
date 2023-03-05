@@ -57,9 +57,9 @@ const PageLogin = () => {
                     const role = (res.data.role)
                     const token = (res.data.token)
                     const idUser = (res.data.id_customer)
-                    localStorage.setItem('role', role);
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('id_customer', idUser);
+                    sessionStorage.setItem('role', role);
+                    sessionStorage.setItem('token', token);
+                    sessionStorage.setItem('id_customer', idUser);
                     router.push('/beranda');
        
                 } else {

@@ -4,6 +4,7 @@ import { RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri'
 import { BiMessageAltDetail } from 'react-icons/bi'
 import FormInput from './components/FormInput';
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../utils/headerConfig';
 
 
 const User = () => {
@@ -18,7 +19,7 @@ const User = () => {
 
 
   const fetchUser = () => {
-    axios.get("http://localhost:8080/user")
+    axios.get("http://localhost:8080/user", headerConfig())
       .then(res => {
         setData(res.data.user)
         setLoading(false)
@@ -47,7 +48,7 @@ const User = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8080/user/${id}`)
+        axios.delete(`http://localhost:8080/user/${id}`, headerConfig())
         Swal.fire({
           position: 'center',
           icon: 'success',

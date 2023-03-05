@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
+import { headerConfig } from '../../utils/headerConfig'
 
 const Bayar = () => {
 
@@ -28,14 +29,14 @@ const Bayar = () => {
         handleAddPemesanan()
 
         if (typeof window !== 'undefined') {
-            setNomorPemesanan(localStorage.getItem('nomor_pemesanan'))
-            setIdCustomer(localStorage.getItem('id_customer'))
-            setTglPemesanan(localStorage.getItem('date_now'))
-            setTglCheckIn(localStorage.getItem('check_in'))
-            setTglCheckOut(localStorage.getItem('check_out'))
-            setJumlahKamar(localStorage.getItem('jumlah_kamar'))
-            setNamaTipeKamar(localStorage.getItem('nama_tipe_kamar'))
-            setIdTipeKamar(localStorage.getItem('id_tipe_kamar'))
+            setNomorPemesanan(sessionStorage.getItem('nomor_pemesanan'))
+            setIdCustomer(sessionStorage.getItem('id_customer'))
+            setTglPemesanan(sessionStorage.getItem('date_now'))
+            setTglCheckIn(sessionStorage.getItem('check_in'))
+            setTglCheckOut(sessionStorage.getItem('check_out'))
+            setJumlahKamar(sessionStorage.getItem('jumlah_kamar'))
+            setNamaTipeKamar(sessionStorage.getItem('nama_tipe_kamar'))
+            setIdTipeKamar(sessionStorage.getItem('id_tipe_kamar'))
         }
     }, [selisiHari])
 
@@ -68,20 +69,20 @@ const Bayar = () => {
                 id_user: null
             };
 
-            axios.post("http://localhost:8080/pemesanan/", sendData)
+            axios.post("http://localhost:8080/pemesanan/", sendData, headerConfig())
                 .then(() => {
                     setPostSuccess(true);
                     setPostFailed(false);
-                    localStorage.removeItem('nomor_pemesanan')
-                    localStorage.removeItem('nama_pemesan')
-                    localStorage.removeItem('email_pemesan')
-                    localStorage.removeItem('date_now')
-                    localStorage.removeItem('check_in')
-                    localStorage.removeItem('check_out')
-                    localStorage.removeItem('jumlah_kamar')
-                    localStorage.removeItem('nama_tipe_kamar')
-                    localStorage.removeItem('tipe_kamar')
-                    localStorage.removeItem('id_tipe_kamar')
+                    sessionStorage.removeItem('nomor_pemesanan')
+                    sessionStorage.removeItem('nama_pemesan')
+                    sessionStorage.removeItem('email_pemesan')
+                    sessionStorage.removeItem('date_now')
+                    sessionStorage.removeItem('check_in')
+                    sessionStorage.removeItem('check_out')
+                    sessionStorage.removeItem('jumlah_kamar')
+                    sessionStorage.removeItem('nama_tipe_kamar')
+                    sessionStorage.removeItem('tipe_kamar')
+                    sessionStorage.removeItem('id_tipe_kamar')
                     router.push('/pemesanan')
                 })
                 .catch((err) => console.log(err));

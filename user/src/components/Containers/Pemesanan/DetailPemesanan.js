@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import DatePicker from "react-datepicker";
+import { headerConfig } from '../../utils/headerConfig';
 
 const DetailPemesanan = () => {
     const [data, setData] = useState()
@@ -29,7 +30,7 @@ const DetailPemesanan = () => {
     }, [id])
 
     const getPemesananById = async (e) => {
-        await axios.get(`http://localhost:8080/pemesanan/${id}`)
+        await axios.get(`http://localhost:8080/pemesanan/${id}`, headerConfig())
             .then((res) => {
                 setNomorPemesanan(res.data.data?.nomor_pemesanan)
                 setNamaPemesan(res.data.data?.customer.name)
@@ -51,7 +52,7 @@ const DetailPemesanan = () => {
     }
 
     const getKamarBoked = async (e) => {
-        await axios.get(`http://localhost:8080/detail_pemesanan/${id}`)
+        await axios.get(`http://localhost:8080/detail_pemesanan/${id}`, headerConfig())
             .then((res) => {
                 setData(res.data.data)
             })

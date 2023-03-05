@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import Swal from 'sweetalert2'
+import { headerConfig } from '../../utils/headerConfig'
 
 const Pemesanan = () => {
     const [data, setData] = useState()
@@ -20,7 +21,7 @@ const Pemesanan = () => {
         setIdPemesanan(id)
         setStatus(status)
         if (typeof window !== 'undefined') {
-            setIdUser(localStorage.getItem('id_user'))
+            setIdUser(sessionStorage.getItem('id_user'))
         }
     }
 
@@ -36,7 +37,7 @@ const Pemesanan = () => {
     }, [keyword])
 
     const fetchPemesanan = () => {
-        axios.get(`http://localhost:8080/pemesanan/resepsionis?search_query=${query}`)
+        axios.get(`http://localhost:8080/pemesanan/resepsionis?search_query=${query}`, headerConfig())
             .then(function (res) {
                 setData(res.data.result)
                 console.log(res.data.data)
@@ -49,7 +50,7 @@ const Pemesanan = () => {
             status_pemesanan: status,
             id_user: idUser
         }
-        axios.put(`http://localhost:8080/pemesanan/${idPemesanan}`, data)
+        axios.put(`http://localhost:8080/pemesanan/${idPemesanan}`, data, headerConfig())
             .then(() => {
                 setOpen(false)
                 router.push('/pemesanan')
@@ -82,7 +83,7 @@ const Pemesanan = () => {
                                 <option value="check_in">check_in</option>
                                 <option value="check_out">check_out</option>
                             </select>
-                            <button className='bg-primary-700  p-3 rounded-xl '><MdKeyboardArrowRight className='text-white' /></button>
+                            <button className='p-3 bg-primary-700 rounded-xl '><MdKeyboardArrowRight className='text-white' /></button>
                         </div>
                     </form>
                     <label for="table-search" className="sr-only">Search</label>
@@ -153,7 +154,7 @@ const Pemesanan = () => {
                                     {item.tipe_kamar?.nama_tipe_kamar}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <div onClick={(e) => Muncul(item.status_pemesanan, item.id_pemesanan)} className={`px-5 py-2 font-medium border-2 border-solid shadow-xl ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check_in' ? "border-yellow-400" : item.status_pemesanan === 'check_out' ? "border-green-500" : "border-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} rounded-lg`}>
+                                    <div onClick={(e) => Muncul(item.status_pemesanan, item.id_pemesanan)} className={`cursor-pointer px-5 py-2 font-medium border-2 border-solid shadow-xl ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check_in' ? "border-yellow-400" : item.status_pemesanan === 'check_out' ? "border-green-500" : "border-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} rounded-lg`}>
                                         <div className='relative flex items-center justify-between '>
                                             <button>{item.status_pemesanan}</button>
                                             <MdKeyboardArrowRight className='absolute right-0 items-center ' />
@@ -176,8 +177,8 @@ const Pemesanan = () => {
                             <option value="check_in">check_in</option>
                             <option value="check_out">check_out</option>
                         </select>
-                        <button className='px-5 py-2 mt-10 mr-3 bg-red-600 rounded-lg text-white' onClick={(e) => setOpen(false)}>close</button>
-                        <button onClick={editStatus} className='px-5 py-2 mt-10 rounded-lg text-white bg-primary-700 ' >Save</button>
+                        <button className='px-5 py-2 mt-10 mr-3 text-white bg-red-600 rounded-lg' onClick={(e) => setOpen(false)}>close</button>
+                        <button onClick={editStatus} className='px-5 py-2 mt-10 text-white rounded-lg bg-primary-700 ' >Save</button>
                     </div>
                 </div>
 

@@ -4,6 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { useDropzone } from 'react-dropzone';
 import { ImFilePicture } from 'react-icons/im'
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../../utils/headerConfig';
 
 
 const FormInput = () => {
@@ -22,7 +23,7 @@ const FormInput = () => {
   const files = acceptedFiles.map(file => (
     <li key={file.path}>
       <div className='w-full px-10'>
-        <div className='w-full bg-primary-700 text-white px-3 py-2 rounded-md flex items-center gap-5'>
+        <div className='flex items-center w-full gap-5 px-3 py-2 text-white rounded-md bg-primary-700'>
           <ImFilePicture />
           <p>
             {file.path} - {file.size} bytes
@@ -33,7 +34,7 @@ const FormInput = () => {
   ));
 
   const fetchTipeKamar = (e) => {
-    axios.get("http://localhost:8080/tipe_kamar/")
+    axios.get("http://localhost:8080/tipe_kamar/", headerConfig())
       .then(function (res) {
         setTipeKamars(res.data.data)
       });
@@ -68,7 +69,7 @@ const FormInput = () => {
       data.append("harga",harga)
       data.append("deskripsi",deskripsi)
 
-      axios.post("http://localhost:8080/tipe_kamar/", data)
+      axios.post("http://localhost:8080/tipe_kamar/", data, headerConfig())
         .then((res) => {
           setStoreSuccess(true);
           setStoreFailed(false);
@@ -93,11 +94,6 @@ const FormInput = () => {
     // handleAddKamar()
   }, [])
 
-  const numberFormat = value =>
-    new Intl.NumberFormat("en-ID", {
-      style: "currency",
-      currency: "IDR"
-    }).format(value);
 
 
   return (
@@ -168,8 +164,8 @@ const FormInput = () => {
 
 
                 <div className='flex items-center justify-end gap-5 px-10 mt-10 '>
-                  <button onClick={handleOpen} className='w-32 text-white py-2 text-lg font-medium rounded-lg bg-primary-700'>Cancel</button>
-                  <button type='submit' className='w-32 py-2 text-white text-lg font-medium rounded-lg bg-primary-700'>Add</button>
+                  <button onClick={handleOpen} className='w-32 py-2 text-lg font-medium text-white rounded-lg bg-primary-700'>Cancel</button>
+                  <button type='submit' className='w-32 py-2 text-lg font-medium text-white rounded-lg bg-primary-700'>Add</button>
                 </div>
 
               </form>

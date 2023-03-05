@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
+import { headerConfig } from '../utils/headerConfig';
 import Pagination from './Pagination/Pagination';
 
 const ListkamarPagination = () => {
@@ -15,7 +16,7 @@ const ListkamarPagination = () => {
 
 
     const fetchKamar = (e) => {
-        axios.get("http://localhost:8080/tipe_kamar/")
+        axios.get("http://localhost:8080/tipe_kamar/", headerConfig())
             .then(function (res) {
                 setKamars(res.data.data)
                 setLoading(false)

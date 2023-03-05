@@ -4,6 +4,7 @@ import { RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri'
 import { BiMessageAltDetail } from 'react-icons/bi'
 import FormInput from './components/FormInput';
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../utils/headerConfig';
 
 
 const TipeKamar = () => {
@@ -18,7 +19,7 @@ const TipeKamar = () => {
 
 
   const fetchTipeKamar = (e) => {
-    axios.get("http://localhost:8080/tipe_kamar/")
+    axios.get("http://localhost:8080/tipe_kamar/",headerConfig())
       .then(function (res) {
         setTipeKamars(res.data.data)
         setLoading(false)
@@ -46,7 +47,7 @@ const TipeKamar = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8080/tipe_kamar/${id}`)
+        axios.delete(`http://localhost:8080/tipe_kamar/${id}`, headerConfig())
         Swal.fire({
           position: 'center',
           icon: 'success',

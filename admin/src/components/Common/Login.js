@@ -57,9 +57,9 @@ const PageLogin = () => {
                     // const role = (res.data.role)
                     // const token = (res.data.token)
                     // const idUser = (res.data.id_user)
-                    localStorage.setItem('role', res.data.role);
-                    localStorage.setItem('token', res.data.token);
-                    localStorage.setItem('id_user', res.data.id_user);
+                    sessionStorage.setItem('role', res.data.role);
+                    sessionStorage.setItem('token', res.data.token);
+                    sessionStorage.setItem('id_user', res.data.id_user);
                     // router.push('kamar');
                     if (res.data.role === "manager") {
                         return (

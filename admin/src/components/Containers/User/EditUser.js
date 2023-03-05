@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../utils/headerConfig';
 
 const EditUser = () => {
 
@@ -19,7 +20,7 @@ const EditUser = () => {
 
   const getData = async () => {
     await axios
-      .get(`http://localhost:8080/user/${id}`)
+      .get(`http://localhost:8080/user/${id}`, headerConfig())
       .then((res) => {
         setNama(res.data.data?.nama_user)
         setRole(res.data.data?.role)
@@ -41,7 +42,7 @@ const EditUser = () => {
       formData.append("password", password);
       formData.append("foto", foto);
 
-      await axios.put(`http://localhost:8080/user/${id}`, formData)
+      await axios.put(`http://localhost:8080/user/${id}`, formData, headerConfig())
         .then(() => {
           Swal.fire({
             position: 'center',

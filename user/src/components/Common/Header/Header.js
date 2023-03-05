@@ -71,9 +71,9 @@ const Header = () => {
     }
 
     function handleLogout() {
-        localStorage.removeItem("token")
-        localStorage.removeItem("id_customer")
-        localStorage.removeItem("role")
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("id_customer")
+        sessionStorage.removeItem("role")
         router.push('/login')
     }
 

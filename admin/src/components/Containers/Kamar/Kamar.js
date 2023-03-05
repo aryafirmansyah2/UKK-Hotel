@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { RiEdit2Line, RiDeleteBin6Line } from 'react-icons/ri'
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../utils/headerConfig';
 // import Pagination from '../../Common/Pagination';
 import FormInput from './components/FormInput';
 
@@ -18,7 +19,7 @@ const Kamar = () => {
 
 
   const fetchKamar = (e) => {
-    axios.get("http://localhost:8080/kamar/")
+    axios.get("http://localhost:8080/kamar/",headerConfig())
       .then(function (res) {
         setKamars(res.data.data)
         setLoading(false)
@@ -46,7 +47,7 @@ const Kamar = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8080/kamar/${id}`)
+        axios.delete(`http://localhost:8080/kamar/${id}`,headerConfig())
         Swal.fire({
           position: 'center',
           icon: 'success',

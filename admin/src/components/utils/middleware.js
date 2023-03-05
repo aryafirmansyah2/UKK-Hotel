@@ -1,7 +1,7 @@
 export const Middleware = (router) => {
     if (typeof window !== 'undefined') {
-        const role = localStorage.getItem('role')
-        const token = localStorage.getItem('token')
+        const role = sessionStorage.getItem('role')
+        const token = sessionStorage.getItem('token')
 
         if (!token && !role) {
             router.push('/login');

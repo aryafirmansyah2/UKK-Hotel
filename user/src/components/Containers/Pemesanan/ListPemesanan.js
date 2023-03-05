@@ -2,6 +2,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { MdOutlineConfirmationNumber, MdOutlineNightsStay, MdOutlineDoorFront, MdOutlineDateRange } from 'react-icons/md'
+import { headerConfig } from '../../utils/headerConfig'
 
 const ListPemesanan = () => {
 
@@ -19,7 +20,7 @@ const ListPemesanan = () => {
   const fetchDetailPemesanan = async () => {
     if (typeof window !== 'undefined') {
 
-      await axios.get(`http://localhost:8080/pemesanan/customer/${localStorage.getItem('id_customer')}`)
+      await axios.get(`http://localhost:8080/pemesanan/customer/${sessionStorage.getItem('id_customer')}`, headerConfig())
         .then((res) => {
           setData(res.data.data)
         });
@@ -39,8 +40,8 @@ const ListPemesanan = () => {
           <select id="countries" defaultValue={'DEFAULT'} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option selected value='DEFAULT'>pilih status</option>
             <option selected value='Terbaru'>Terbaru</option>
-            <option value="check-in">Check In</option>
-            <option value="check-out">Check Out</option>
+            <option value="check_in">Check In</option>
+            <option value="check_out">Check Out</option>
           </select>
         </div>
 
@@ -50,7 +51,7 @@ const ListPemesanan = () => {
               <div className='w-full p-5 mt-2 border-b-2 border-gray-300 border-solid rounded-lg dark:border-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700 '>
                 <div className='flex items-center justify-between'>
                   <h1 className='text-base font-medium'>{item.tipe_kamar.nama_tipe_kamar}</h1>
-                  <div className={`px-5 py-[4px] font-medium border-2 border-solid  ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check-in' ? "border-yellow-400" : item.status_pemesanan === 'Check-Out' ? "border-green-500" : "border-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check-in' ? "text-yellow-400" : item.status_pemesanan === 'check-out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'Check-In' ? "text-yellow-400" : item.status_pemesanan === 'check-out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'Check-In' ? "text-yellow-400" : item.status_pemesanan === 'Check-Out' ? "text-green-500" : "text-blue-600"} rounded-lg uppercase`}>{item.status_pemesanan}</div>
+                  <div className={`px-5 py-[4px] font-medium border-2 border-solid  ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check_in' ? "border-yellow-400" : item.status_pemesanan === 'check_out' ? "border-green-500" : "border-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} rounded-lg uppercase`}>{item.status_pemesanan}</div>
                 </div>
                 <div className='flex justify-between mt-5 '>
                   <div className='flex items-center gap-5 '>

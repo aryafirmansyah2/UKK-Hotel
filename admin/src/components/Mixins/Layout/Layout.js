@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     setMounted(true);
     if (typeof window !== 'undefined') {
-      setRole(localStorage.getItem('role'))
+      setRole(sessionStorage.getItem('role'))
     }
   }, []);
 
@@ -52,9 +52,9 @@ const Layout = ({ children }) => {
   }
 
   function logout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('role')
-    localStorage.removeItem('id_user')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('role')
+    sessionStorage.removeItem('id_user')
     router.push('/login')
   }
   return (

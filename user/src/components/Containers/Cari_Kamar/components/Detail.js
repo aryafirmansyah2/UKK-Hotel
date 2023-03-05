@@ -4,6 +4,7 @@ import axios from 'axios'
 // import DatePicker from "react-datepicker";
 import moment from 'moment/moment';
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../../utils/headerConfig';
 
 const Detail = () => {
     const [startDate, setStartDate] = useState();
@@ -30,7 +31,7 @@ const Detail = () => {
 
     const getData = () => {
         axios
-            .get(`http://localhost:8080/tipe_kamar/${id}`)
+            .get(`http://localhost:8080/tipe_kamar/${id}`, headerConfig())
             .then((res) => {
                 setNamaTipeKamar(res.data.data?.nama_tipe_kamar)
                 setHarga(res.data.data?.harga)
@@ -64,10 +65,10 @@ const Detail = () => {
 
     function selisiHari() {
         if (typeof window !== 'undefined') {
-            setStartDate(localStorage.getItem('check_in'))
-            setEndDate(localStorage.getItem('check_out'))
-            const tglPertama = Date.parse(localStorage.getItem('check_in'))
-            const tglKedua = Date.parse(localStorage.getItem('check_out'))
+            setStartDate(sessionStorage.getItem('check_in'))
+            setEndDate(sessionStorage.getItem('check_out'))
+            const tglPertama = Date.parse(sessionStorage.getItem('check_in'))
+            const tglKedua = Date.parse(sessionStorage.getItem('check_out'))
             const miliday = 24 * 60 * 60 * 1000;
             const selisih = (tglKedua - tglPertama) / miliday;
             setTotalHari(selisih)
@@ -82,11 +83,11 @@ const Detail = () => {
     const handleSubmit = () => {
         if (jumlahKamar>0) {
             // if (jumlahKamar < 0) {
-            localStorage.setItem("date_now", moment(Date.now()).format('YYYY-MM-DD'))
-            localStorage.setItem("jumlah_kamar", jumlahKamar)
-            localStorage.setItem("nomor_pemesanan", randomNumber(1000000000, 9999999999))
-            localStorage.setItem("nama_tipe_kamar", namaTipeKamar)
-            localStorage.setItem("id_tipe_kamar", idTipeKamar)
+            sessionStorage.setItem("date_now", moment(Date.now()).format('YYYY-MM-DD'))
+            sessionStorage.setItem("jumlah_kamar", jumlahKamar)
+            sessionStorage.setItem("nomor_pemesanan", randomNumber(1000000000, 9999999999))
+            sessionStorage.setItem("nama_tipe_kamar", namaTipeKamar)
+            sessionStorage.setItem("id_tipe_kamar", idTipeKamar)
             router.push('/pembayaran/metode_pembayaran')
         }
         else {

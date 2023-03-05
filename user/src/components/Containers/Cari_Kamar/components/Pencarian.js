@@ -19,19 +19,20 @@ import moment from 'moment';
 import axios from 'axios';
 import Pagination from '../../../Common/Pagination/Pagination';
 import Link from 'next/link';
+import { headerConfig } from '../../../utils/headerConfig';
 
-// typeof window !== 'undefined' ? localStorage.getItem('checkin') : null
+// typeof window !== 'undefined' ? sessionStorage.getItem('checkin') : null
 
 const Pencarian = () => {
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [lengthKamar, setLengthKamar] = useState();
   const [postsPerPage] = useState(8);
 
   useEffect(() => {
     handleFilterRoom()
+    
   }, [])
 
   const handleFilterRoom = (e) => {
@@ -44,12 +45,12 @@ const Pencarian = () => {
         check_out_date: endDate
       }
 
-      axios.post("http://localhost:8080/filter-room", data)
+      axios.post("http://localhost:8080/filter-room", data, headerConfig())
         .then((result) => {
           if (startDate && endDate) {
             setData(result.data.room)
-            localStorage.setItem("check_in", moment(startDate).format('YYYY-MM-DD'))
-            localStorage.setItem("check_out", moment(endDate).format('YYYY-MM-DD'))
+            sessionStorage.setItem("check_in", moment(startDate).format('YYYY-MM-DD'))
+            sessionStorage.setItem("check_out", moment(endDate).format('YYYY-MM-DD'))
           }
           else {
             Swal.fire({
@@ -79,7 +80,12 @@ const Pencarian = () => {
     window.scrollTo({ top: 800, behavior: 'smooth' });
   };
 
-  // console.log(lengthKamar)
+  const numberFormat = value =>
+    new Intl.NumberFormat("en-ID", {
+      style: "currency",
+      currency: "IDR"
+    }).format(value);
+
 
   return (
     <div>
@@ -134,24 +140,26 @@ const Pencarian = () => {
 
         </div>
         <div className="w-full mt-10">
-          <div className="flex flex-wrap gap-12 " >
+          <div className="flex flex-wrap gap-7 " >
             {currentPosts ? currentPosts.map((kamars, i) => (
               <Link href={'/cari-kamar/detail/' + kamars.id_tipe_kamar} key={i}>
-                <div className="max-w-sm my-5 overflow-hidden bg-white rounded shadow-lg dark:bg-gray-700" >
-                  <img src={`http://localhost:8080/image/tipe_kamar/${kamars.foto}`} alt="Flowbite Logo" className='w-[380px] h-[241px] m-auto' />
-                  <div className="px-6 py-4">
-                    <div className="mb-2 text-xl font-bold">{kamars.nama_tipe_kamar}</div>
-                    <p className="text-base text-gray-700 dark:text-gray-400">
-                      {kamars.deskripsi.substring(0, 100)} ...
+                <div className="max-w-sm mx-auto my-5 mr-5 overflow-hidden rounded-lg " >
+                  <img src={`http://localhost:8080/image/tipe_kamar/${kamars.foto}`} alt="Flowbite Logo" className='w-[380px] h-[241px] m-auto rounded-lg' />
+                  <div className=" py-4">
+                    <div className="mb-2 text-lg font-semibold">{kamars.nama_tipe_kamar}</div>
+                    <p className="text-base text-gray-700 dark:text-gray-400 font-medium">
+                      {numberFormat(kamars.harga)}
+                      <span className='text-gray-400'> per malam</span>
                     </p>
-                  </div>
-                  <div className="px-6 pt-4 pb-2">
-                    <span className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">#photography</span>
-                    <span className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">#travel</span>
-                    <span className="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">#winter</span>
+                    <p className="text-base text-gray-700 dark:text-gray-400 mt-3 ">
+                      {
+                        `${kamars.deskripsi.substring(0, 80)}...`
+                      }
+                    </p>
                   </div>
                 </div >
               </Link >
+
             )) : <div>no data </div>}
           </div >
           {

@@ -19,12 +19,14 @@ const Pencarian = () => {
   return (
     <div>
       <div className='relative'>
-        <div className='absolute w-full z-[-1] '>
-          <Image src={Main} className='w-full' />
-          <Image src={Overlay} className='absolute top-0 w-full ' />
+        <div className='absolute w-full   '>
+          <div className='relative bg-red-500 w-full h-[200px] lg:h-full'>
+            <Image src={Main} className='abolute top-0 w-full h-full lg:object-cover' />
+            <Image src={Overlay} className='absolute top-0 w-full h-full lg:object-cover ' />
+          </div>
           <div className='absolute top-0 flex flex-col items-start justify-center w-full h-full px-5 bg-black opacity-50 md:px-[100px] '>
-            <h2 className='text-lg font-bold text-white md:text-4xl xl:text-6xl'>Temukan Penginapan</h2>
-            <h2 className='text-lg font-bold text-white md:text-4xl xl:text-6xl'>Sesuai Dengan Kriteriamu !</h2>
+            <h2 className='text-2xl font-bold text-white md:text-4xl xl:text-6xl'>Temukan Penginapan</h2>
+            <h2 className='text-2xl font-bold text-white md:text-4xl xl:text-6xl'>Sesuai Dengan Kriteriamu !</h2>
           </div>
         </div>
       </div>

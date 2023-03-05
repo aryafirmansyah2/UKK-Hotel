@@ -11,7 +11,7 @@ const index = () => {
   useEffect(() => {
     Middleware(router)
     if (typeof window !== 'undefined') {
-      setRole(localStorage.getItem('role'))
+      setRole(sessionStorage.getItem('role'))
     }
   }, [])
   useEffect(() => {

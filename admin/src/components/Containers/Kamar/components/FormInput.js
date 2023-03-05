@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { RxCross2 } from 'react-icons/rx';
 import Swal from 'sweetalert2';
+import { headerConfig } from '../../../utils/headerConfig';
 
 const FormInput = () => {
   const [open, setOpen] = useState(true)
@@ -18,7 +19,7 @@ const FormInput = () => {
 
 
   const fetchTipeKamar = (e) => {
-    axios.get("http://localhost:8080/tipe_kamar/")
+    axios.get("http://localhost:8080/tipe_kamar/",headerConfig())
       .then(function (res) {
         setTipeKamars(res.data.data)
       });
@@ -50,7 +51,7 @@ const FormInput = () => {
         id_tipe_kamar: tipeKamar
       };
 
-      axios.post("http://localhost:8080/kamar/", sendData)
+      axios.post("http://localhost:8080/kamar/", sendData, headerConfig())
         .then(() => {
           setStoreSuccess(true);
           setStoreFailed(false);
