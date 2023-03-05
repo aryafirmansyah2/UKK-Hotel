@@ -57,7 +57,7 @@ let upload = multer({
     },
 })
 
-app.get("/",  (req, res) => {
+app.get("/", auth, (req, res) => {
     User.findAll()
         .then(result => {
             res.json({
@@ -72,7 +72,7 @@ app.get("/",  (req, res) => {
 })
 
 //endpoint untuk melihat user berdasarkan id
-app.get("/:id",  (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = { id_user: req.params.id }
 
     User.findOne({ where: param })
@@ -92,7 +92,7 @@ app.get("/:id",  (req, res) => {
 
 
 //endpoint untuk menyimpan data admin, METHOD: POST, function: create
-app.post("/", upload.single("foto"), async (req, res) => {
+app.post("/", auth, upload.single("foto"), async (req, res) => {
     const salt = await bcrypt.genSalt(10);
 
 
@@ -123,7 +123,7 @@ app.post("/", upload.single("foto"), async (req, res) => {
     }
 })
 
-app.put("/:id", upload.single("foto"), async (req, res) => {
+app.put("/:id", auth, upload.single("foto"), async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     let param = { id_user: req.params.id }
     let data = {
@@ -168,7 +168,7 @@ app.put("/:id", upload.single("foto"), async (req, res) => {
         })
 })
 
-app.delete("/:id",  async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_user: req.params.id }
         let result = await User.findOne({ where: param })

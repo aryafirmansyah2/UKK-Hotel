@@ -1,4 +1,5 @@
 const express = require("express")
+const auth = require("../auth")
 
 const app = express()
 app.use(express.json())
@@ -10,7 +11,7 @@ const Customer = models.customer
 const Kamar = models.kamar
 const Pemesanan = models.pemesanan
 
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     Dtl_pemesanan.findAll({
         include: [
             {
@@ -52,7 +53,7 @@ app.get("/", (req, res) => {
         })
 })
 
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = ({ id_pemesanan: req.params.id })
     Dtl_pemesanan.findAll({
         where: param,
@@ -95,7 +96,7 @@ app.get("/:id", (req, res) => {
             })
         })
 })
-app.get("/cetak/:id", (req, res) => {
+app.get("/cetak/:id", auth, (req, res) => {
     let param = ({ id_detail_pemesanan: req.params.id })
     Dtl_pemesanan.findOne({
         where: param,
@@ -139,7 +140,7 @@ app.get("/cetak/:id", (req, res) => {
         })
 })
 
-app.put("/:id", (req, res) => {
+app.put("/:id", auth, (req, res) => {
     let param = { id_detail_pemesanan: req.params.id }
     let data = {
         id_pemesanan: req.body.id_pemesanan,
@@ -162,7 +163,7 @@ app.put("/:id", (req, res) => {
         })
 })
 
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_detail_pemesanan: req.params.id }
         let result = await Dtl_pemesanan.findOne({ where: param, include: ['kamar', 'pemesanan',] })

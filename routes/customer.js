@@ -79,7 +79,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get("/",  (req, res) => {
+app.get("/", auth, (req, res) => {
     Customer.findAll()
         .then(result => {
             res.json({
@@ -94,7 +94,7 @@ app.get("/",  (req, res) => {
 })
 
 //endpoint untuk melihat user berdasarkan id
-app.get("/:id",  (req, res) => {
+app.get("/:id", auth,  (req, res) => {
     let param = { id_customer: req.params.id }
 
     Customer.findOne({ where: param })
@@ -111,22 +111,19 @@ app.get("/:id",  (req, res) => {
 })
 
 
-
-
-//endpoint untuk menyimpan data admin, METHOD: POST, function: create
-app.post("/", async (req, res) => {
+app.post("/",  async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
 
 
-    // if (!req.file) {
-    //     res.json({
-    //         message: "No uploaded file"
-    //     })
-    // } else {
+    if (!req.file) {
+        res.json({
+            message: "No uploaded file"
+        })
+    } else {
         let data = {
             name: req.body.name,
-            // foto: req.file.filename,
+            foto: req.file.filename,
             email: req.body.email,
             password: await bcrypt.hash(req.body.password, salt),
             username: req.body.username
@@ -143,10 +140,10 @@ app.post("/", async (req, res) => {
                     message: error.message
                 })
             })
-    // }
+    }
 })
 
-app.put("/:id", upload.single("foto"), async (req, res) => {
+app.put("/:id", auth, upload.single("foto"), async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     let param = { id_customer: req.params.id }
     let data = {

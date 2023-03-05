@@ -1,5 +1,6 @@
 const sequelize = require(`sequelize`);
 const operator = sequelize.Op;
+const auth = require("../auth")
 
 const express = require("express")
 
@@ -11,7 +12,7 @@ const Kamar = models.kamar
 const Tp_kamar = models.tipe_kamar
 const Detail_pemesanan = models.detail_pemesanan
 
-app.post('/', async (req, res) => {
+app.post('/', auth, async (req, res) => {
 
     let checkInDate = req.body.check_in_date;
     let checkOutDate = req.body.check_out_date;

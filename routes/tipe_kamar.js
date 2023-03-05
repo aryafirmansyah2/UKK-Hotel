@@ -1,5 +1,7 @@
 //import express
 const express = require("express")
+const auth = require("../auth")
+
 
 const app = express()
 app.use(express.json())
@@ -46,7 +48,7 @@ let upload = multer({
     },
 })
 
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     Tp_kamar.findAll()
         .then(result => {
             res.json({
@@ -60,7 +62,7 @@ app.get("/", (req, res) => {
         })
 })
 
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = { id_tipe_kamar: req.params.id }
 
     Tp_kamar.findOne({ where: param })
@@ -76,7 +78,7 @@ app.get("/:id", (req, res) => {
         })
 })
 
-app.post("/", upload.single("foto"), (req, res) => {
+app.post("/", auth, upload.single("foto"), (req, res) => {
 
     if (!req.file) {
         res.json({
@@ -105,7 +107,7 @@ app.post("/", upload.single("foto"), (req, res) => {
     }
 })
 
-app.put("/:id", upload.single("foto"), (req, res) => {
+app.put("/:id", auth, upload.single("foto"), (req, res) => {
     let param = { id_tipe_kamar: req.params.id }
     let data = {
         nama_tipe_kamar: req.body.nama_tipe_kamar,
@@ -145,7 +147,7 @@ app.put("/:id", upload.single("foto"), (req, res) => {
         })
 })
 
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_tipe_kamar: req.params.id }
         let result = await Tp_kamar.findOne({ where: param })

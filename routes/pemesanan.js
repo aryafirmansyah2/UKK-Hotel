@@ -1,6 +1,6 @@
 //import express
 const express = require("express")
-const detail_pemesanan = require("../models/detail_pemesanan")
+const auth = require("../auth")
 
 const app = express()
 app.use(express.json())
@@ -16,7 +16,7 @@ const Tp_kamar = models.tipe_kamar
 const Kamar = models.kamar
 const Detail_pemesanan = models.detail_pemesanan
 
-app.get("/resepsionis", async (req, res) => {
+app.get("/resepsionis", auth, async (req, res) => {
     const search = req.query.search_query || "";
     const result = await Pemesanan.findAll({
         include: ["tipe_kamar", "customer"],
@@ -28,7 +28,7 @@ app.get("/resepsionis", async (req, res) => {
             }]
         },
         order: [
-            ['id_pemesanan', 'DESC']
+            ['tgl_check_in', 'ASC']
         ]
     });
     res.json({
@@ -36,7 +36,7 @@ app.get("/resepsionis", async (req, res) => {
     });
 })
 
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     Pemesanan.findAll(
         {
             include: ["tipe_kamar", "user"],
@@ -59,7 +59,7 @@ app.get("/", (req, res) => {
         })
 })
 
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = ({ id_pemesanan: req.params.id })
     Pemesanan.findOne(
         {
@@ -79,7 +79,7 @@ app.get("/:id", (req, res) => {
             })
         })
 })
-app.get("/customer/:id", (req, res) => {
+app.get("/customer/:id", auth, (req, res) => {
     let param = ({ id_customer: req.params.id })
     Pemesanan.findAll(
         {
@@ -104,7 +104,7 @@ app.get("/customer/:id", (req, res) => {
         })
 })
 
-app.post('/', async (req, res) => {
+app.post('/', auth, async (req, res) => {
     let tw = Date.now()
 
     let numberRandom = Math.floor(Math.random() * (10000000 - 99999999) + 99999999);
@@ -221,7 +221,7 @@ app.post('/', async (req, res) => {
 })
 
 
-app.put("/:id", (req, res) => {
+app.put("/:id", auth, (req, res) => {
     let param = { id_pemesanan: req.params.id }
     let tw = Date.now()
     let data = {
@@ -251,7 +251,7 @@ app.put("/:id", (req, res) => {
         })
 })
 
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_pemesanan: req.params.id }
         let result = await Pemesanan.findOne({ where: param, include: ['tipe_kamar', 'user'] })

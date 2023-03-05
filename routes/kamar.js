@@ -20,7 +20,7 @@ const Kamar = models.kamar
 const Tp_kamar = models.tipe_kamar
 const Detail_pemesanan = models.detail_pemesanan
 
-app.get("/", (req, res) => {
+app.get("/",auth, (req, res) => {
     Kamar.findAll({ include: ["tipe_kamar"] })
         .then(result => {
             res.json({
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
         })
 })
 
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     let param = ({ id_kamar: req.params.id })
     Kamar.findAll({ where: param, include: ["tipe_kamar"] })
         .then(result => {
@@ -50,7 +50,7 @@ app.get("/:id", (req, res) => {
 })
 
 
-app.post("/", (req, res) => {
+app.post("/", auth, (req, res) => {
 
      
     
@@ -74,7 +74,7 @@ app.post("/", (req, res) => {
         })
 })
 
-app.put("/:id", (req, res) => {
+app.put("/:id", auth, (req, res) => {
     let param = { id_kamar: req.params.id }
     let data = {
         nomor_kamar: req.body.nomor_kamar,
@@ -95,7 +95,7 @@ app.put("/:id", (req, res) => {
         })
 })
 
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_kamar: req.params.id }
         let result = await Kamar.findOne({ where: param, include: ['tipe_kamar'] })
