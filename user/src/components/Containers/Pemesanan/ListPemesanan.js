@@ -51,7 +51,9 @@ const ListPemesanan = () => {
               <div className='w-full p-5 mt-2 border-b-2 border-gray-300 border-solid rounded-lg dark:border-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700 '>
                 <div className='flex items-center justify-between'>
                   <h1 className='text-base font-medium'>{item.tipe_kamar.nama_tipe_kamar}</h1>
-                  <div className={`px-5 py-[4px] font-medium border-2 border-solid  ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check_in' ? "border-yellow-400" : item.status_pemesanan === 'check_out' ? "border-green-500" : "border-blue-600"} ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} ${item.status_pemesanan === 'Baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} rounded-lg uppercase`}>{item.status_pemesanan}</div>
+                  <div className={`px-5 py-[4px] font-medium border-2 border-solid rounded-lg uppercase
+                  ${item.status_pemesanan === 'baru' ? "border-purple-600" : item.status_pemesanan === 'check_in' ? "border-yellow-400" : item.status_pemesanan === 'check_out' ? "border-green-500" : "border-blue-600"} 
+                  ${item.status_pemesanan === 'baru' ? "text-purple-600" : item.status_pemesanan === 'check_in' ? "text-yellow-400" : item.status_pemesanan === 'check_out' ? "text-green-500" : "text-blue-600"} `}>{item.status_pemesanan}</div>
                 </div>
                 <div className='flex justify-between mt-5 '>
                   <div className='flex items-center gap-5 '>

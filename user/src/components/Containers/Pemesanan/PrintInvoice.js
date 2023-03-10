@@ -206,39 +206,6 @@ const PrintInvoice = () => {
                         </tr>
                       </tfoot>
                     </table>
-                    {/* <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
-                      <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400 ">
-                        <tr>
-                          <th scope="col" className="px-6 py-3">
-                            No Kamar
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Nomor Tipe Kamar
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Tgl Check In
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Tgl Check Out
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          <tr key={i} className="bg-gray-50  dark:bg-gray-800  dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            </th>
-                            <td className="px-6 py-4">
-                              {item.kamar.tipe_kamar.nama_tipe_kamar}
-                            </td>
-                            <td className="px-6 py-4">
-                              {item.pemesanan.tgl_check_in}
-                            </td>
-                            <td className="px-6 py-4">
-                              {item.pemesanan.tgl_check_out}
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table> */}
                   </div>
                 </div>
 

@@ -49,6 +49,8 @@ const Pencarian = () => {
         .then((result) => {
           if (startDate && endDate) {
             setData(result.data.room)
+
+            console.log(result.data)
             sessionStorage.setItem("check_in", moment(startDate).format('YYYY-MM-DD'))
             sessionStorage.setItem("check_out", moment(endDate).format('YYYY-MM-DD'))
           }

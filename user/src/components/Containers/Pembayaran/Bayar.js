@@ -17,6 +17,7 @@ const Bayar = () => {
     const [tglCheckOut, setTglCheckOut] = useState()
     const [jumlahKamar, setJumlahKamar] = useState()
     const [idTipeKamar, setIdTipeKamar] = useState()
+    const [harga, setHarga] = useState()
     const [namaTipeKamar, setNamaTipeKamar] = useState()
     const [lamaPenginapan, setLamaPenginapan] = useState()
 
@@ -37,6 +38,7 @@ const Bayar = () => {
             setJumlahKamar(sessionStorage.getItem('jumlah_kamar'))
             setNamaTipeKamar(sessionStorage.getItem('nama_tipe_kamar'))
             setIdTipeKamar(sessionStorage.getItem('id_tipe_kamar'))
+            setHarga(sessionStorage.getItem('harga'))
         }
     }, [selisiHari])
 
@@ -50,6 +52,17 @@ const Bayar = () => {
 
     function handleOpen() {
         setOpen(!open)
+    }
+
+    const numberFormat = value =>
+        new Intl.NumberFormat("en-ID", {
+            style: "currency",
+            currency: "IDR"
+        }).format(value);
+
+    function totalHarga() {
+        const total = (jumlahKamar * harga) * lamaPenginapan
+        return total
     }
 
     const handleAddPemesanan = async (e) => {
@@ -89,7 +102,7 @@ const Bayar = () => {
         }
     }
 
-console.log(tglPemesanan)
+    console.log(tglPemesanan)
 
     return (
         <div className='flex items-start justify-center w-full h-full gap-10 py-10 '>
@@ -102,16 +115,6 @@ console.log(tglPemesanan)
                     </div>
                     {open ?
                         <div>
-                            {/* <div className='w-full lg:flex justify-between gap-5 py-[25px] '>
-                                <div className='w-full '>
-                                    <h2 className='mb-5 text-lg font-normal text-gray-400 dark:text-gray-500'>Nama Pemesan</h2>
-                                    <p className='text-lg font-semibold text-black' >{namaPemesan}</p>
-                                </div>
-                                <div className='w-full '>
-                                    <h2 className='mb-5 text-lg font-normal text-gray-400 dark:text-gray-500'>Email Pemesan</h2>
-                                    <p className='text-lg font-semibold text-black' >{emailPemesan}</p>
-                                </div>
-                            </div> */}
                             <div className='w-full lg:flex justify-between gap-5 py-[25px] '>
                                 <div className='w-full '>
                                     <h2 className='mb-5 text-lg font-normal text-gray-400 dark:text-gray-500'>Tanggal Pemesanan</h2>
@@ -153,12 +156,12 @@ console.log(tglPemesanan)
                     <div className='px-5 mt-5 bg-white border-2 border-gray-300 border-solid rounded-sm dark:border-white dark:bg-gray-800'>
                         <div className='flex items-center justify-between py-3'>
                             <h2>Harga</h2>
-                            <h2>-IDR 1.000.000,00</h2>
+                            <h2>{numberFormat(totalHarga())}</h2>
                         </div>
                         <div className='border-gray-300 bg-white dark:border-white border-solid border-b-[1px] rounded-lg dark:bg-gray-800' />
                         <div className='flex items-center justify-between py-3'>
                             <h2 className='text-lg font-medium text-primary-500'>Total Harga</h2>
-                            <h2 className='text-lg font-medium text-primary-500'>-IDR 1.000.000,00</h2>
+                            <h2 className='text-lg font-medium text-primary-500'>{numberFormat(totalHarga())}</h2>
                         </div>
                     </div>
                     <form onSubmit={handleAddPemesanan}>
